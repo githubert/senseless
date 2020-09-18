@@ -19,9 +19,8 @@ public abstract class Value {
      */
     Instant tsOfMaxValue;
 
-
     /**
-     * Timestampt of the last update of the minimum value.
+     * Timestamp of the last update of the minimum value.
      */
     Instant tsOfMinValue;
 
