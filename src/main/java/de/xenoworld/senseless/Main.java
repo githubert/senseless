@@ -82,14 +82,14 @@ public class Main {
      */
     @Nullable
     private static Collection findCollection(Context context, String path) {
-        var ep = mostSpecific(path);
+        var collection = mostSpecific(path);
 
-        if (ep == null) {
+        if (collection == null) {
             context.status(404).result("Not found.");
             return null;
         }
 
-        return ep;
+        return collection;
     }
 
     /**
@@ -101,20 +101,20 @@ public class Main {
         final var token = context.queryParam("token");
         final var path = stripTrailingSlashes(context.path());
 
-        Collection ep = findCollection(context, path);
+        Collection collection = findCollection(context, path);
 
-        if (ep == null) {
+        if (collection == null) {
             return;
         }
 
-        if (!isAllowed(context, token, ep.readToken())) {
+        if (!isAllowed(context, token, collection.readToken())) {
             return;
         }
 
-        var subPath = path.replaceFirst(ep.prefix(), "");
+        var subPath = path.replaceFirst(collection.prefix(), "");
 
         // TODO: This warrants a test ;-)
-        context.json(ep.values().entrySet().parallelStream().filter(entry -> entry.getKey().startsWith(subPath)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        context.json(collection.values().entrySet().parallelStream().filter(entry -> entry.getKey().startsWith(subPath)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
     }
 
     /**
